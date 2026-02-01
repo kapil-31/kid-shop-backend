@@ -76,3 +76,7 @@ export async function searchUsers({
     nextCursor
   };
 }
+
+export async function findOneUser(data: Partial<CreateUserInput>){
+  return prisma.user.findFirst({where:data})
+}

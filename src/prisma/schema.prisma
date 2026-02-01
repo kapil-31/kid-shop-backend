@@ -13,23 +13,24 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
-  orders    Order[]
+
+  refreshToken RefreshToken[]
+  orders       Order[]
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String
-  price       Decimal
-  attributes  Json?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id         String   @id @default(uuid())
+  name       String
+  price      Decimal
+  attributes Json?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
 }
 
 model Order {
@@ -41,14 +42,13 @@ model Order {
   createdAt DateTime    @default(now())
 }
 
-
 model Coupon {
-  id          String   @id @default(uuid())
-  code        String   @unique
-  discount    Int
-  maxUsage    Int
-  usedCount   Int      @default(0)
-  expiresAt   DateTime
+  id        String   @id @default(uuid())
+  code      String   @unique
+  discount  Int
+  maxUsage  Int
+  usedCount Int      @default(0)
+  expiresAt DateTime
 }
 
 enum Role {
@@ -60,4 +60,16 @@ enum OrderStatus {
   PENDING
   PAID
   CANCELLED
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
