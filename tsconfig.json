@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+      "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2021",
+
+    /* Output */
+    "rootDir": "src",
+    "outDir": "./dist",
+    "sourceMap": true,
+
+    /* Strictness */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Interop */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Quality */
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+
+   
+    "baseUrl": "src",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@modules/*": ["modules/*"],
+      "@utils/*": ["utils/*"],
+      "@middlewares/*": ["middlewares/*"],
+    }
+  },
+  "include": ["src", "src/prisma"],
+  "exclude": ["node_modules", "dist"]
+}
