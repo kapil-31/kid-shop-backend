@@ -17,10 +17,29 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
+export const CouponType = {
+  FIXED: 'FIXED',
+  PERCENT: 'PERCENT',
+  FREE_SHIPPING: 'FREE_SHIPPING'
+} as const
+
+export type CouponType = (typeof CouponType)[keyof typeof CouponType]
+
+
 export const OrderStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',
+  SHIPPED: 'SHIPPED',
+  REFUNDED: 'REFUNDED',
   CANCELLED: 'CANCELLED'
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const OrderAdressType = {
+  BILLING: 'BILLING',
+  SHIPPING: 'SHIPPING'
+} as const
+
+export type OrderAdressType = (typeof OrderAdressType)[keyof typeof OrderAdressType]

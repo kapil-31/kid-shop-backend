@@ -28,15 +28,55 @@ export type User = Prisma.UserModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
  * Model Order
  * 
  */
 export type Order = Prisma.OrderModel
 /**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model Address
+ * 
+ */
+export type Address = Prisma.AddressModel
+/**
+ * Model OrderAddress
+ * 
+ */
+export type OrderAddress = Prisma.OrderAddressModel
+/**
+ * Model CartItems
+ * 
+ */
+export type CartItems = Prisma.CartItemsModel
+/**
  * Model Coupon
  * 
  */
 export type Coupon = Prisma.CouponModel
+/**
+ * Model CouponRedemption
+ * 
+ */
+export type CouponRedemption = Prisma.CouponRedemptionModel
 /**
  * Model RefreshToken
  * 

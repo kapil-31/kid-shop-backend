@@ -3,12 +3,30 @@ import { CreateProductInput } from "./product.schema";
 
 export async function createProduct(data: CreateProductInput) {
   return prisma.product.create({
-    data: {
-      name: data.name,
-      price: data.price,
-      attributes: data.attributes,
-    },
+    data
   });
+}
+
+export async function getProudctById(id:string){
+  return prisma.product.findUnique({
+    where:{
+      id,
+      category:{
+        isActive:true
+      }
+    },
+    include:{
+      category: {
+      select:{
+        id:true,
+        name:true,
+        logo:true,
+        description:true,
+        isActive:true
+      }
+      }
+    }
+  })
 }
 
 export async function searchProducts({
@@ -16,8 +34,8 @@ export async function searchProducts({
   limit = 10,
   cursor,
 }: {
-  query: string;
-  limit: number;
+  query?: string;
+  limit?: number;
   cursor?: string;
 }) {
   let where = {}; 
