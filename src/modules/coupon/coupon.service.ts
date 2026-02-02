@@ -18,7 +18,7 @@ export async function updateCoupon(id:string,data:updateCategorySchema){
     })
 }
 
-export async function searchCoupon(search:string){
+export async function  searchCoupon(search:string){
     return prisma.coupon.findMany({
         where:{
             code:{
