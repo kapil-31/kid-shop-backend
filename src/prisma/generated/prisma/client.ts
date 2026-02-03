@@ -98,6 +98,11 @@ export type Coupon = Prisma.CouponModel
  */
 export type CouponRedemption = Prisma.CouponRedemptionModel
 /**
+ * Model Files
+ * 
+ */
+export type Files = Prisma.FilesModel
+/**
  * Model RefreshToken
  * 
  */

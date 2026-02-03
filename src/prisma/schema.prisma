@@ -186,6 +186,20 @@ model CouponRedemption {
   coupon          Coupon   @relation(fields: [couponId], references: [id], onDelete: NoAction)
 }
 
+model Files {
+  id String @id @default(uuid())
+  name String
+  url String
+  size Decimal
+  type String
+  entity String?
+  entityId  String?   // UUID of related row
+
+  createdAt DateTime @default(now())
+  @@index([entity, entityId])
+
+}
+
 enum Role {
   ADMIN
   CUSTOMER

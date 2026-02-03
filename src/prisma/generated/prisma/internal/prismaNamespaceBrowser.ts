@@ -63,6 +63,7 @@ export const ModelName = {
   CartItems: 'CartItems',
   Coupon: 'Coupon',
   CouponRedemption: 'CouponRedemption',
+  Files: 'Files',
   RefreshToken: 'RefreshToken'
 } as const
 
@@ -264,6 +265,20 @@ export const CouponRedemptionScalarFieldEnum = {
 } as const
 
 export type CouponRedemptionScalarFieldEnum = (typeof CouponRedemptionScalarFieldEnum)[keyof typeof CouponRedemptionScalarFieldEnum]
+
+
+export const FilesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  size: 'size',
+  type: 'type',
+  entity: 'entity',
+  entityId: 'entityId',
+  createdAt: 'createdAt'
+} as const
+
+export type FilesScalarFieldEnum = (typeof FilesScalarFieldEnum)[keyof typeof FilesScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {

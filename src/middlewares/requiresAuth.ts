@@ -6,13 +6,15 @@ export function requireAuth(
   res: Response,
   next: NextFunction
 ) {
-  const header = req.headers.authorization;
 
-  if (!header || !header.startsWith("Bearer ")) {
+
+  let token = req.headers.authorization || req.cookies.auth_token  ;
+
+  if (!token || !token.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const token = header.split(" ")[1];
+   token = token.split(" ")[1];
 
   try {
     const payload = verifyAccessToken(token);

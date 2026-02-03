@@ -6,13 +6,28 @@ import {
   searchCategory,
   deleteCategory,
 } from "./category.service";
+import { storeFileInDb } from "@modules/file-upload/upload.service";
 
 export async function createCategoryHandler(req: Request, res: Response) {
   const data = createCategorySchema.parse(req.body);
 
   const cat = await storeCategory(data);
+  let file = null;
 
-  res.json(cat).status(200);
+  if (data.logo) {
+    file = await storeFileInDb({
+      ...data.logo,
+      entity: "category",
+      entityId: cat.id,
+    });
+  }
+
+  res
+    .json({
+      ...cat,
+      logo: file?.url,
+    })
+    .status(200);
 }
 
 export async function updateCategoryHandler(req: Request, res: Response) {

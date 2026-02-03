@@ -396,6 +396,7 @@ export const ModelName = {
   CartItems: 'CartItems',
   Coupon: 'Coupon',
   CouponRedemption: 'CouponRedemption',
+  Files: 'Files',
   RefreshToken: 'RefreshToken'
 } as const
 
@@ -412,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "product" | "review" | "category" | "order" | "orderItem" | "cart" | "address" | "orderAddress" | "cartItems" | "coupon" | "couponRedemption" | "refreshToken"
+    modelProps: "user" | "product" | "review" | "category" | "order" | "orderItem" | "cart" | "address" | "orderAddress" | "cartItems" | "coupon" | "couponRedemption" | "files" | "refreshToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1304,6 +1305,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Files: {
+      payload: Prisma.$FilesPayload<ExtArgs>
+      fields: Prisma.FilesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FilesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FilesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        findFirst: {
+          args: Prisma.FilesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FilesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        findMany: {
+          args: Prisma.FilesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>[]
+        }
+        create: {
+          args: Prisma.FilesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        createMany: {
+          args: Prisma.FilesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FilesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>[]
+        }
+        delete: {
+          args: Prisma.FilesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        update: {
+          args: Prisma.FilesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        deleteMany: {
+          args: Prisma.FilesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FilesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FilesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>[]
+        }
+        upsert: {
+          args: Prisma.FilesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilesPayload>
+        }
+        aggregate: {
+          args: Prisma.FilesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFiles>
+        }
+        groupBy: {
+          args: Prisma.FilesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FilesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FilesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FilesCountAggregateOutputType> | number
+        }
+      }
+    }
     RefreshToken: {
       payload: Prisma.$RefreshTokenPayload<ExtArgs>
       fields: Prisma.RefreshTokenFieldRefs
@@ -1599,6 +1674,20 @@ export const CouponRedemptionScalarFieldEnum = {
 } as const
 
 export type CouponRedemptionScalarFieldEnum = (typeof CouponRedemptionScalarFieldEnum)[keyof typeof CouponRedemptionScalarFieldEnum]
+
+
+export const FilesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  size: 'size',
+  type: 'type',
+  entity: 'entity',
+  entityId: 'entityId',
+  createdAt: 'createdAt'
+} as const
+
+export type FilesScalarFieldEnum = (typeof FilesScalarFieldEnum)[keyof typeof FilesScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -1913,6 +2002,7 @@ export type GlobalOmitConfig = {
   cartItems?: Prisma.CartItemsOmit
   coupon?: Prisma.CouponOmit
   couponRedemption?: Prisma.CouponRedemptionOmit
+  files?: Prisma.FilesOmit
   refreshToken?: Prisma.RefreshTokenOmit
 }
 
