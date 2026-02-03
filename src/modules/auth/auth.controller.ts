@@ -14,6 +14,8 @@ import {
 } from "./auth.service";
 
 export async function loginHandler(req: Request, res: Response) {
+  console.log({req})
+
   const input = authSchema.parse(req.body);
   const user = await findOneUser({ email: input.email });
 
