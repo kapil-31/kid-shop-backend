@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model ProductImage
+ * 
+ */
+export type ProductImage = Prisma.ProductImageModel
+/**
  * Model Review
  * 
  */
@@ -78,12 +83,12 @@ export type Coupon = Prisma.CouponModel
  */
 export type CouponRedemption = Prisma.CouponRedemptionModel
 /**
- * Model Files
- * 
- */
-export type Files = Prisma.FilesModel
-/**
  * Model RefreshToken
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model TempUpload
+ * 
+ */
+export type TempUpload = Prisma.TempUploadModel

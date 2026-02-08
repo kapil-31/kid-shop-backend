@@ -28,10 +28,7 @@ export const createProductSchema = z.object({
     .int()
     .nonnegative("Stock quantity cannot be negative"),
 
-  images: z
-    .array(z.string().url())
-    .optional(),
-
+  images: z.array(z.object({id:z.string(),name:z.string(),url:z.string()})).optional(),
   tags: z
     .string()
     .optional()

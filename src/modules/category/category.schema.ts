@@ -9,13 +9,9 @@ export const createCategorySchema = z.object({
 
   description: z.string().max(255).optional(),
 
-  logo: z.object({
-    name: z.string(),
-    url: z.string(),
-    size: z.number().positive(),
-    type: z.string(),
-  }),
+  temLogoId: z.uuid('Image id is required'),
   isActive: z.boolean().optional().default(true),
+  logo:z.string().optional()
 });
 
 export type createCategorySchema = z.infer<typeof createCategorySchema>;

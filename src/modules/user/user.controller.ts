@@ -15,12 +15,12 @@ export async function searchUsersHandler(req: Request, res: Response) {
   const cursor = req.query.cursor as string | undefined;
   const limit = req.query.limit ? Number(req.query.limit) : 10;
 
-  const result = await searchUsers({
+
+  const users = await searchUsers({
     query,
     cursor,
-    limit
+    limit,
+     excludeIds : [req?.user?.userId as string]
   });
-  res.json({
-    data:result
-  });
+    return res.json(users).status(200);
 }

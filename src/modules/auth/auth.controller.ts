@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import { authSchema } from "./auth.schema";
 import { findOneUser } from "@modules/user/user.service";
 import bcrypt from "bcrypt";
 import {
+  decodeJwtToken,
+  setHttpCookies,
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
@@ -12,91 +14,123 @@ import {
   revokeToken,
   storeRefreshToken,
 } from "./auth.service";
+import { hash } from "@utils/helpers";
 
+const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: false,
+  sameSite: "lax",
+  path: "/",
+  domain: "localhost",
+};
 export async function loginHandler(req: Request, res: Response) {
-  console.log({req})
-
   const input = authSchema.parse(req.body);
   const user = await findOneUser({ email: input.email });
 
-  if (!user) throw Error("Invalid email or password");
-
   if (!user || !(await bcrypt.compare(input.password, user.password))) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    res.status(401);
+    throw Error("Invalid credentials");
   }
-  const signingPayload = { userId: user.id, role: user.role };
+  const signingPayload = {
+    userId: user.id,
+    role: user.role,
+    email: user.email,
+  };
 
   const accessToken = signAccessToken(signingPayload);
 
   const refreshToken = signRefreshToken(signingPayload);
 
-  //  store
-  await storeRefreshToken({
-    token: refreshToken,
-    userId: user.id,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  });
+  const [accessTokenExpires, refreshTokenExpire] = [
+    decodeJwtToken(accessToken),
+    decodeJwtToken(refreshToken),
+  ];
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/api/auth/refresh",
-  });
+  const hashedRefreshtoken = await hash(refreshToken)
+
+  if (refreshTokenExpire) {
+    let expiresAt = new Date(refreshTokenExpire.exp * 1000);
+    await storeRefreshToken({
+      token: hashedRefreshtoken,
+      userId: user.id,
+      expiresAt,
+    });
+    setHttpCookies("refreshToken", hashedRefreshtoken, res, {
+      expires: expiresAt,
+    });
+  }
+
+  if (accessTokenExpires) {
+    setHttpCookies("accessToken", accessToken, res, {
+      expires: new Date(accessTokenExpires.exp * 1000),
+    });
+  }
 
   return res.json({
     success: true,
-    accessToken,
+    user,
   });
 }
 
 export async function refreshHandler(req: Request, res: Response) {
-  const token = req.cookies.refreshToken;
+  let token = req.headers.authorization;
   if (!token) {
     return res.status(401).json({ message: "Missing refresh token" });
   }
+  token = token?.split("Bearer ")[1];
+
   const storedToken = await findUniqueToken(token);
 
   if (!storedToken || storedToken.revoked) {
     return res.status(401).json({ message: "Invalid refresh token" });
   }
-  const payload = verifyRefreshToken(token) as { userId: string; role: string };
+  const { userId, role } = verifyRefreshToken(token) as {
+    userId: string;
+    role: string;
+  };
 
-  await revokeToken(token);
+  // await revokeToken(token);
+  try {
+    const newAccessToken = signAccessToken({ userId, role });
 
-  const newAccessToken = signAccessToken(payload);
+    const newRefreshToken = signRefreshToken({ userId, role });
 
-  const newRefreshToken = signRefreshToken(payload);
+    await storeRefreshToken({
+      token: newRefreshToken,
+      userId: userId,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
 
-  await storeRefreshToken({
-    token: newRefreshToken,
-    userId: payload.userId,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  });
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      path: "/api/auth/refresh",
+    });
 
-  res.cookie("refreshToken", newRefreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/api/auth/refresh",
-  });
-
-  return res.json({
-    success: true,
-    accessToken:newAccessToken,
-  });
+    return res.json({
+      success: true,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function logoutHandler(req: Request, res: Response) {
   const token = req.cookies.refreshToken;
-
   if (token) {
-    await revokeToken(token)
+    await revokeToken(token);
   }
 
-  res.clearCookie("refreshToken", {
-    path: "/api/auth/refresh"
-  });
-
   res.json({ success: true });
+}
+
+export async function getMeHandler(req: Request, res: Response) {
+  const user = req?.user;
+  if (user) {
+    const result = await findOneUser({ id: user.id });
+    res.json(result);
+  }
 }

@@ -3,7 +3,9 @@ import { createCategorySchema, updateCategorySchema } from "./category.schema";
 
 import slugify from "slugify";
 
-export async function storeCategory({ logo, ...data }: createCategorySchema) {
+ type storeCateogryType = Omit<createCategorySchema, 'temLogoId'>
+
+export async function storeCategory({  ...data }: storeCateogryType) {
   const slug = slugify(data.name, { lower: true });
   if(await findCategoryBySlug(slug)){
     throw Error('Category Already Exists')
@@ -18,7 +20,7 @@ export async function storeCategory({ logo, ...data }: createCategorySchema) {
 
 export async function updateCategory(
   id: string,
-  { logo, ...data }: updateCategorySchema,
+  { ...data }: Partial<storeCateogryType>,
 ) {
   return prisma.category.update({
     where: {

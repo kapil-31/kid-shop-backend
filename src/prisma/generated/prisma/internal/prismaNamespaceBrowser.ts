@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Product: 'Product',
+  ProductImage: 'ProductImage',
   Review: 'Review',
   Category: 'Category',
   Order: 'Order',
@@ -63,8 +64,8 @@ export const ModelName = {
   CartItems: 'CartItems',
   Coupon: 'Coupon',
   CouponRedemption: 'CouponRedemption',
-  Files: 'Files',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  TempUpload: 'TempUpload'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -89,7 +90,8 @@ export const UserScalarFieldEnum = {
   fullName: 'fullName',
   password: 'password',
   role: 'role',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  avatar: 'avatar'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -101,14 +103,31 @@ export const ProductScalarFieldEnum = {
   price: 'price',
   description: 'description',
   isActive: 'isActive',
-  createdAt: 'createdAt',
   categoryId: 'categoryId',
   stockQty: 'stockQty',
-  images: 'images',
-  tags: 'tags'
+  tags: 'tags',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductImageScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  urlThumb: 'urlThumb',
+  altText: 'altText',
+  name: 'name',
+  size: 'size',
+  order: 'order',
+  productId: 'productId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+} as const
+
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
@@ -267,20 +286,6 @@ export const CouponRedemptionScalarFieldEnum = {
 export type CouponRedemptionScalarFieldEnum = (typeof CouponRedemptionScalarFieldEnum)[keyof typeof CouponRedemptionScalarFieldEnum]
 
 
-export const FilesScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  url: 'url',
-  size: 'size',
-  type: 'type',
-  entity: 'entity',
-  entityId: 'entityId',
-  createdAt: 'createdAt'
-} as const
-
-export type FilesScalarFieldEnum = (typeof FilesScalarFieldEnum)[keyof typeof FilesScalarFieldEnum]
-
-
 export const RefreshTokenScalarFieldEnum = {
   id: 'id',
   token: 'token',
@@ -291,6 +296,20 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const TempUploadScalarFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  originalName: 'originalName',
+  tempPath: 'tempPath',
+  size: 'size',
+  mimetype: 'mimetype',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type TempUploadScalarFieldEnum = (typeof TempUploadScalarFieldEnum)[keyof typeof TempUploadScalarFieldEnum]
 
 
 export const SortOrder = {

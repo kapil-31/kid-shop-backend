@@ -8,7 +8,7 @@ export function errorHandler(
   next: NextFunction
 ) {
   if (err instanceof ZodError) {
-    return res.status(400).json({
+    return res.status(409).json({
       success: false,
       message: "Validation failed",
       errors: err.issues.map(issue => ({
@@ -19,13 +19,13 @@ export function errorHandler(
   }
 
   if (err instanceof Error) {
-    return res.status(400).json({
+    return res.status(res.statusCode).json({
       success: false,
       message: err.message
     });
   }
 
-  return res.status(500).json({
+  return res.status(res.statusCode).json({
     success: false,
     message: "Internal server error"
   });

@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import path from "path";
-import { UPLOAD_DIR } from "./upload.schema";
 import fs from "fs";
+import { TEMP_DIR } from "./config";
+import { imageProcessingService } from "./upload.service";
+import { prisma } from "lib/prisma";
 
 export async function fileUploadHanlder(req: Request, res: Response) {
   const files = req.files as Express.Multer.File[] | undefined;
@@ -11,31 +13,40 @@ export async function fileUploadHanlder(req: Request, res: Response) {
       message: "No files uploaded",
     });
   }
-  const uploadedFiles = files.map((file) => ({
-      name: file.originalname,
-      url: `/uploads/${file.filename}`,
-      size: file.size,
-      type: file.mimetype,
-    }));
+  const uploadedFiles = [];
 
-    res.json({
-      success: true,
-      files: uploadedFiles,
-    });
+  for (const file of files) {
+    uploadedFiles.push(await imageProcessingService.saveTempUpload(file));
+  }
+
+  res.json({
+    success: true,
+    files: uploadedFiles?.map((item) => ({
+      id: item.id,
+      name: item.filename,
+      url: item.tempPath,
+    })),
+  });
 }
 
+export async function deleteFileHandler(req: Request, res: Response) {
+  const fileId = req.params.id as string;
+  const file = await prisma.tempUpload.findUnique({
+    where: { id: fileId },
+  });
 
-export async function deleteFileHandler(req:Request,res:Response){
+  if(!file) throw Error('File Not found');
 
-    const fileId = req.params.id
+  
+  const filePath = path.join(TEMP_DIR  , path.basename(file?.tempPath))
 
+ await prisma.tempUpload.delete({
+    where: { id: fileId },
+  });
 
-    const filePath = UPLOAD_DIR + '/' + fileId;
+  fs.unlinkSync(filePath);
 
-     fs.unlinkSync(filePath);
-
-     res.json({
-        message:'file deleted successfully'
-     })
-
+  res.json({
+    message: "file deleted successfully",
+  });
 }

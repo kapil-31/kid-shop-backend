@@ -1,7 +1,7 @@
 import { prisma } from "lib/prisma";
 import { authSchema } from "./auth.schema";
 import { findOneUser } from "@modules/user/user.service";
-
+import bcrypt from 'bcrypt'
 export async function checkUser(data: authSchema) {
   return findOneUser(data);
 }
@@ -12,7 +12,7 @@ export async function storeRefreshToken(data: {
   expiresAt: Date;
 }) {
   await prisma.refreshToken.create({
-    data: data,
+    data,
   });
 }
 

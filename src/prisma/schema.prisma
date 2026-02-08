@@ -20,27 +20,54 @@ model User {
   password     String
   role         Role           @default(CUSTOMER)
   createdAt    DateTime       @default(now())
+  avatar       String?
   refreshToken RefreshToken[]
   orders       Order[]
   cart         Cart?
   address      Address[]
+
 }
 
 model Product {
-  id          String      @id @default(uuid())
+  id          String         @id @default(uuid())
   name        String
   price       Decimal
   description String
-  isActive    Boolean     @default(true)
-  createdAt   DateTime    @default(now())
+  isActive    Boolean        @default(true)
   categoryId  String
-  category    Category    @relation(fields: [categoryId], references: [id],onDelete: Cascade,onUpdate: Cascade)
+  category    Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   stockQty    Int
-  images      Json?
+  images      ProductImage[]
   tags        String?
   reviews     Review[]
   orderItems  OrderItem[]
   cartItem    CartItems[]
+  createdAt   DateTime       @default(now())
+  updateAt    DateTime       @default(now())
+}
+
+model ProductImage {
+  id        String      @id @default(cuid())
+  url       String
+  urlThumb  String?
+  altText   String?
+  name      String
+  size      Decimal
+  order     Int         @default(0)
+  productId String
+  status    ImageStatus @default(PENDING)
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+  updateAt  DateTime    @default(now())
+
+  @@index([productId])
+}
+
+enum ImageStatus {
+  COMPLETED
+  PENDING
+  PROCESSING
+  FAILED
 }
 
 model Review {
@@ -58,7 +85,7 @@ model Review {
 model Category {
   id          String    @id @default(uuid())
   name        String    @unique
-  logo        String?
+  logo        Json?
   slug        String    @unique
   description String?
   isActive    Boolean   @default(true)
@@ -129,22 +156,22 @@ model Address {
 }
 
 model OrderAddress {
-  id         String          @id @default(uuid())
-  orderId    String
-  addressId  String
-  type       OrderAdressType @default(SHIPPING)
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime        @default(now())
-  fullName   String
-  line1      String?
-  line2      String?
-  city       String
-  state      String
-  postalCode String
-  phone      String
-  country    String
-  order      Order           @relation(fields: [orderId], references: [id])
-  snapshottedAt DateTime @default(now())
+  id            String          @id @default(uuid())
+  orderId       String
+  addressId     String
+  type          OrderAdressType @default(SHIPPING)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now())
+  fullName      String
+  line1         String?
+  line2         String?
+  city          String
+  state         String
+  postalCode    String
+  phone         String
+  country       String
+  order         Order           @relation(fields: [orderId], references: [id])
+  snapshottedAt DateTime        @default(now())
 }
 
 model CartItems {
@@ -186,20 +213,6 @@ model CouponRedemption {
   coupon          Coupon   @relation(fields: [couponId], references: [id], onDelete: NoAction)
 }
 
-model Files {
-  id String @id @default(uuid())
-  name String
-  url String
-  size Decimal
-  type String
-  entity String?
-  entityId  String?   // UUID of related row
-
-  createdAt DateTime @default(now())
-  @@index([entity, entityId])
-
-}
-
 enum Role {
   ADMIN
   CUSTOMER
@@ -235,3 +248,17 @@ model RefreshToken {
 
   @@index([userId])
 }
+
+model TempUpload {
+  id           String   @id @default(uuid())
+  filename     String
+  originalName String
+  tempPath     String
+  size         Int
+  mimetype     String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([expiresAt])
+}
+

@@ -1,32 +1,39 @@
 import { prisma } from "lib/prisma";
 import { CreateProductInput } from "./product.schema";
 
-export async function createProduct(data: CreateProductInput) {
+type StoreProductInput = Omit<CreateProductInput, "images">;
+export type ProductImage = { name: string; url: string; size: number }
+export async function createProduct(data: StoreProductInput,images:ProductImage[] = []) {
   return prisma.product.create({
-    data
+    data: {
+      ...data,
+      images: {
+        create: images,
+      },
+    },
   });
 }
 
-export async function getProudctById(id:string){
+export async function getProudctById(id: string) {
   return prisma.product.findUnique({
-    where:{
+    where: {
       id,
-      category:{
-        isActive:true
-      }
-    },
-    include:{
       category: {
-      select:{
-        id:true,
-        name:true,
-        logo:true,
-        description:true,
-        isActive:true
-      }
-      }
-    }
-  })
+        isActive: true,
+      },
+    },
+    include: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+          logo: true,
+          description: true,
+          isActive: true,
+        },
+      },
+    },
+  });
 }
 
 export async function searchProducts({
@@ -38,7 +45,7 @@ export async function searchProducts({
   limit?: number;
   cursor?: string;
 }) {
-  let where = {}; 
+  let where = {};
 
   // build where query based on this
   const products = await prisma.product.findMany({
@@ -51,6 +58,14 @@ export async function searchProducts({
     orderBy: {
       id: "asc",
     },
+    include:{
+      images:{
+        select:{id:true,url:true,name:true}
+      },
+      category:{
+        select:{id:true,name:true}
+      }
+    }
   });
 
   let nextCursor: string | null = null;
@@ -66,7 +81,10 @@ export async function searchProducts({
   };
 }
 
-export async function updateProduct(id: string, data: Partial<CreateProductInput>) {
+export async function updateProduct(
+  id: string,
+  data: Partial<StoreProductInput>,
+) {
   return prisma.product.update({
     where: {
       id,

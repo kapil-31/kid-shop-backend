@@ -8,14 +8,13 @@ export function requireAuth(
 ) {
 
 
-  let token = req.headers.authorization || req.cookies.auth_token  ;
+  let token = req.headers.authorization || req.cookies.accessToken;
 
-  if (!token || !token.startsWith("Bearer ")) {
+  if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-   token = token.split(" ")[1];
-
+   token = token.startsWith("Bearer ") ?  token.split(" ")[1] : token;
   try {
     const payload = verifyAccessToken(token);
     req.user = payload;

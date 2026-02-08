@@ -6,12 +6,18 @@ type SearchUsersInput = {
   query?: string;
   limit?: number;
   cursor?: string; // last user id
+  excludeIds?: string[]; // list of user ids to exclude from the search results
 };
 
 export async function createUser(data: CreateUserInput) {
   const exists = await prisma.user.findUnique({
     where: {
       email: data.email,
+    },
+    include: {
+      address: {
+        select: { id: true, fullName: true ,state:true,country:true,postalCode:true,phone:true,line1:true, city:true},
+      },
     },
   });
 
@@ -34,34 +40,53 @@ export async function createUser(data: CreateUserInput) {
   });
 }
 
-
 export async function searchUsers({
   query,
   limit = 10,
-  cursor
+  cursor,
+  excludeIds,
 }: SearchUsersInput) {
+  let whereQuery: any = {}
+  if(excludeIds?.length){
+    whereQuery ={
+      ...whereQuery,
+      id:{
+        notIn:excludeIds
+      }
+      
+    }
+
+  }
+  if(query){
+      whereQuery = {
+        ...whereQuery,
+          email: {
+            contains: query,
+            mode: "insensitive",
+          },
+        }
+  }
   const users = await prisma.user.findMany({
     take: limit + 1,
     ...(cursor && {
       skip: 1,
-      cursor: { id: cursor }
+      cursor: { id: cursor },
     }),
-    where: query
-      ? {
-          email: {
-            contains: query,
-            mode: "insensitive"
-          }
-        }
-      : undefined,
+    where: whereQuery,
     orderBy: {
-      id: "asc"
+      id: "asc",
     },
     select: {
       id: true,
       email: true,
-      createdAt: true
-    }
+      role:true,
+      createdAt: true,
+        address: {
+        select: { id: true, fullName: true ,state:true,country:true,postalCode:true,phone:true,line1:true, city:true},
+      },
+    },
+    
+    
   });
 
   let nextCursor: string | null = null;
@@ -73,10 +98,12 @@ export async function searchUsers({
 
   return {
     data: users,
-    nextCursor
+    nextCursor,
   };
 }
 
-export async function findOneUser(data: Partial<CreateUserInput>){
-  return prisma.user.findFirst({where:data})
+export async function findOneUser(
+  data: Partial<CreateUserInput & { id: string }>,
+) {
+  return prisma.user.findFirst({ where: data });
 }

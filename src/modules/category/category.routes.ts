@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { createCategoryHandler, updateCategoryHandler,searchCategoryHandler, deleteCategoryHandler } from "./category.controller";
+import { requireAuth } from "@middlewares/requiresAuth";
 
 const router = Router();
 
 router.route('/')
-.get(searchCategoryHandler)
+.get(requireAuth,searchCategoryHandler)
 .post(createCategoryHandler)
 
 

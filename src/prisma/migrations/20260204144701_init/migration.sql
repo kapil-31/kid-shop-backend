@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "ImageStatus" AS ENUM ('COMPLETED', 'PENDING', 'PROCESSING', 'FAILED');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'CUSTOMER');
 
 -- CreateEnum
@@ -18,6 +21,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'CUSTOMER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "avatar" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -29,13 +33,30 @@ CREATE TABLE "Product" (
     "price" DECIMAL(65,30) NOT NULL,
     "description" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "categoryId" TEXT NOT NULL,
     "stockQty" INTEGER NOT NULL,
-    "images" JSONB,
     "tags" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProductImage" (
+    "id" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "urlThumb" TEXT,
+    "altText" TEXT,
+    "name" TEXT NOT NULL,
+    "size" DECIMAL(65,30) NOT NULL,
+    "order" INTEGER NOT NULL DEFAULT 0,
+    "productId" TEXT NOT NULL,
+    "status" "ImageStatus" NOT NULL DEFAULT 'PENDING',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ProductImage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -56,7 +77,7 @@ CREATE TABLE "Review" (
 CREATE TABLE "Category" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "logo" TEXT,
+    "logo" JSONB,
     "slug" TEXT NOT NULL,
     "description" TEXT,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
@@ -206,8 +227,37 @@ CREATE TABLE "RefreshToken" (
     CONSTRAINT "RefreshToken_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TempUpload" (
+    "id" TEXT NOT NULL,
+    "filename" TEXT NOT NULL,
+    "originalName" TEXT NOT NULL,
+    "tempPath" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
+    "mimetype" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TempUpload_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Sessions" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "revoked" BOOLEAN NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL,
+    "lastSeenAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Sessions_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE INDEX "ProductImage_productId_idx" ON "ProductImage"("productId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
@@ -227,8 +277,14 @@ CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
 -- CreateIndex
 CREATE INDEX "RefreshToken_userId_idx" ON "RefreshToken"("userId");
 
+-- CreateIndex
+CREATE INDEX "TempUpload_expiresAt_idx" ON "TempUpload"("expiresAt");
+
 -- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProductImage" ADD CONSTRAINT "ProductImage_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -262,3 +318,6 @@ ALTER TABLE "CouponRedemption" ADD CONSTRAINT "CouponRedemption_couponId_fkey" F
 
 -- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Sessions" ADD CONSTRAINT "Sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -9,6 +9,16 @@
 * 🟢 You can import this file directly.
 */
 
+export const ImageStatus = {
+  COMPLETED: 'COMPLETED',
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  FAILED: 'FAILED'
+} as const
+
+export type ImageStatus = (typeof ImageStatus)[keyof typeof ImageStatus]
+
+
 export const Role = {
   ADMIN: 'ADMIN',
   CUSTOMER: 'CUSTOMER'

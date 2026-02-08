@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { deleteFileHandler, fileUploadHanlder } from "./upload.controller";
-import { multerUploader } from "./upload.schema";
+import { tempMulterUploader } from "./config";
 
 
 const router = Router();
 
-router.route('/').post(multerUploader.array('images',10),fileUploadHanlder)
+router.route('/temp').post(tempMulterUploader.array('images',10),fileUploadHanlder)
 
-router.delete('/:id',deleteFileHandler)
+router.delete('/temp/:id',deleteFileHandler)
 
 
 export default router;
