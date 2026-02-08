@@ -7,7 +7,6 @@ import {
   setHttpCookies,
   signAccessToken,
   signRefreshToken,
-  verifyRefreshToken,
 } from "@utils/jwt";
 import {
   findUniqueToken,
@@ -46,7 +45,7 @@ export async function loginHandler(req: Request, res: Response) {
     decodeJwtToken(refreshToken),
   ];
 
-  const hashedRefreshtoken = await hash(refreshToken)
+  const hashedRefreshtoken = await hash(refreshToken);
 
   if (refreshTokenExpire) {
     let expiresAt = new Date(refreshTokenExpire.exp * 1000);
@@ -73,40 +72,70 @@ export async function loginHandler(req: Request, res: Response) {
 }
 
 export async function refreshHandler(req: Request, res: Response) {
-  let token = req.headers.authorization;
+  let token = req.headers.authorization  || req.cookies.refreshToken;
+  token = token?.startsWith('Bearer') ? token?.split("Bearer ")?.[1]: token;
   if (!token) {
     return res.status(401).json({ message: "Missing refresh token" });
   }
-  token = token?.split("Bearer ")[1];
 
   const storedToken = await findUniqueToken(token);
 
   if (!storedToken || storedToken.revoked) {
     return res.status(401).json({ message: "Invalid refresh token" });
   }
-  const { userId, role } = verifyRefreshToken(token) as {
-    userId: string;
-    role: string;
-  };
 
-  // await revokeToken(token);
   try {
-    const newAccessToken = signAccessToken({ userId, role });
+    // const isValidToken = await bcrypt.compare(token, storedToken.token);
 
-    const newRefreshToken = signRefreshToken({ userId, role });
+    // console.log({isValidToken,token,stored:storedToken.token})
+
+    // if (!isValidToken) throw Error("Invalid Token");
+
+    const user = await findOneUser({ id: storedToken.userId });
+
+    if (!user) throw Error("Malicious activity");
+
+    const tokenPayload = {
+      userId: user.id,
+      role: user.role,
+      email: user.email,
+    };
+
+    const newAccessToken = signAccessToken(tokenPayload);
+
+    const newRefreshToken = signRefreshToken(tokenPayload);
+
+    await revokeToken(token);
 
     await storeRefreshToken({
       token: newRefreshToken,
-      userId: userId,
+      userId: user.id,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
+    const [accessTokenExpires, refreshTokenExpire] = [
+      decodeJwtToken(newAccessToken),
+      decodeJwtToken(newRefreshToken),
+    ];
 
-    res.cookie("refreshToken", newRefreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      path: "/api/auth/refresh",
-    });
+    const hashedRefreshtoken = await hash(newRefreshToken);
+
+    if (refreshTokenExpire) {
+      let expiresAt = new Date(refreshTokenExpire.exp * 1000);
+      await storeRefreshToken({
+        token: hashedRefreshtoken,
+        userId: user.id,
+        expiresAt,
+      });
+      setHttpCookies("refreshToken", hashedRefreshtoken, res, {
+        expires: expiresAt,
+      });
+    }
+
+    if (accessTokenExpires) {
+      setHttpCookies("accessToken", newAccessToken, res, {
+        expires: new Date(accessTokenExpires.exp * 1000),
+      });
+    }
 
     return res.json({
       success: true,
@@ -114,6 +143,9 @@ export async function refreshHandler(req: Request, res: Response) {
       refreshToken: newRefreshToken,
     });
   } catch (error) {
+    res.status(401);
+    res.statusMessage = error?.message ?? "Something went worng";
+
     throw error;
   }
 }

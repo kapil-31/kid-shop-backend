@@ -17,6 +17,8 @@ export function requireAuth(
    token = token.startsWith("Bearer ") ?  token.split(" ")[1] : token;
   try {
     const payload = verifyAccessToken(token);
+
+    console.log({payload})
     req.user = payload;
     next();
   } catch {
