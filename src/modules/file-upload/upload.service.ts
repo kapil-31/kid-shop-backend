@@ -5,6 +5,8 @@ import { TEMP_DIR, THUMBS_DIR, UPLOAD_DIR } from "./config";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "lib/prisma";
+import { ProductImage } from "prisma/generated/prisma/client";
+import { Decimal } from "@prisma/client/runtime/client";
 
 export interface TempUpload {
   id?: string;
@@ -17,7 +19,6 @@ export interface TempUpload {
 }
 
 class ImageProcessingService {
-
   async processImage(filePath: string): Promise<ImageProcessResult> {
     const filename = path.basename(filePath);
     const ext = path.extname(filename);
@@ -102,7 +103,6 @@ class ImageProcessingService {
       data,
     });
 
-
     return {
       id: tempUpload.id,
       filename: tempUpload.filename,
@@ -135,18 +135,22 @@ class ImageProcessingService {
         where: { id: upload.id },
       });
     }
-
   }
 
-   async moveTempToPermanent(tempId: string,returnType:'url' | 'imgObject' = 'url'): Promise<string | {name:string,url:string,size:number}> {
-    const tempUpload = await prisma.tempUpload.findUnique({where:{id:tempId}})
+  async moveTempToPermanent(
+    tempId: string,
+    returnType: "url" | "imgObject" = "url",
+  ): Promise<string | { name: string; url: string; size: number }> {
+    const tempUpload = await prisma.tempUpload.findUnique({
+      where: { id: tempId },
+    });
 
     if (!tempUpload) {
       throw new Error(`Temp upload ${tempId} not found`);
     }
 
-    const tempPath = path.join(TEMP_DIR,basename(tempUpload.tempPath))
-    
+    const tempPath = path.join(TEMP_DIR, basename(tempUpload.tempPath));
+
     if (!fs.existsSync(tempPath)) {
       throw new Error(`Temp file not found: ${tempPath}`);
     }
@@ -156,20 +160,53 @@ class ImageProcessingService {
     const permanentPath = path.join(UPLOAD_DIR, filename);
 
     fs.renameSync(tempPath, permanentPath);
-    const url = `/uploads/${filename}` 
+    const url = `/uploads/${filename}`;
 
-    await prisma.tempUpload.delete({where:{id:tempId}})
-    
-    return returnType ==='url' ? url : {
-      name:tempUpload.originalName,
-      url:url,
-      size:tempUpload.size,
-    };
+    await prisma.tempUpload.delete({ where: { id: tempId } });
+
+    return returnType === "url"
+      ? url
+      : {
+          name: tempUpload.originalName,
+          url: url,
+          size: tempUpload.size,
+        };
+  }
+
+  async deleteProductImage(productId: string,imageId: string) {
+    const productImage = await prisma.productImage.findUnique({
+      where: { id: imageId,productId },
+    });
+    if (!productImage) return null;
+    const url = path.join(UPLOAD_DIR,basename(productImage.url));
+    if (!fs.existsSync(url)) {
+      throw new Error(`Product file not found: ${url}`);
+    }
+    fs.unlinkSync(url);
+
+    await prisma.productImage.delete({
+      where: {
+        id: imageId,
+      },
+    });
+  }
+
+  async saveToProduct(file: Express.Multer.File,id:string) {
+
+    const uploadImage = await prisma.productImage.create({
+      data:{
+        name:file.filename,
+        size:file.size,
+        url:`/uploads/${file.filename}`,
+        productId:id
+      },
+    });
+
+    return uploadImage
   }
 }
 
 export const imageProcessingService = new ImageProcessingService();
-
 
 setInterval(() => {
   imageProcessingService.cleanupExpiredUploads();

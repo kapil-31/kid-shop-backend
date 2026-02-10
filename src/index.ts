@@ -19,9 +19,9 @@ app.use('/api/users',userRoutes)
 
 // app.use(requireAuth)
 
-app.use('/api/product',productRoutes)
-app.use('/api/category',categoryRoutes)
-app.use('/api/coupon',couponRoutes)
+app.use('/api/products',productRoutes)
+app.use('/api/categories',categoryRoutes)
+app.use('/api/coupons',couponRoutes)
 app.use('/api/upload',fileUploadRoutes)
 
 

@@ -10,11 +10,11 @@ import { imageProcessingService } from "@modules/file-upload/upload.service";
 
 export async function createCategoryHandler(req: Request, res: Response) {
   const {temLogoId,...data} = createCategorySchema.parse(req.body);
-  let url = await imageProcessingService.moveTempToPermanent(temLogoId);
+  let url = await imageProcessingService.moveTempToPermanent(temLogoId,'url');
   
   const cat = await storeCategory({
     ...data,
-    logo:url
+    logo:url as string
   });
   res
     .json({

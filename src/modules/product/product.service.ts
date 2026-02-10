@@ -1,5 +1,6 @@
 import { prisma } from "lib/prisma";
 import { CreateProductInput } from "./product.schema";
+import { ProductClientType } from "types/product.types";
 
 type StoreProductInput = Omit<CreateProductInput, "images">;
 export type ProductImage = { name: string; url: string; size: number }
@@ -32,6 +33,15 @@ export async function getProudctById(id: string) {
           isActive: true,
         },
       },
+      images:{
+       
+        select:{
+          id:true,
+          name:true,
+          url:true
+        }
+
+      }
     },
   });
 }
@@ -44,7 +54,10 @@ export async function searchProducts({
   query?: string;
   limit?: number;
   cursor?: string;
-}) {
+}):Promise<{
+  data:ProductClientType[],
+  nextCursor:string | null;
+}> {
   let where = {};
 
   // build where query based on this

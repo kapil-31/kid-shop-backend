@@ -29,7 +29,7 @@ export async function fileUploadHanlder(req: Request, res: Response) {
   });
 }
 
-export async function deleteFileHandler(req: Request, res: Response) {
+export async function deleteFileFromTempHandler(req: Request, res: Response) {
   const fileId = req.params.id as string;
   const file = await prisma.tempUpload.findUnique({
     where: { id: fileId },

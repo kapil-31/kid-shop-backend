@@ -23,6 +23,17 @@ const tempStorage = multer.diskStorage({
   },
 });
 
+const uploadStorage = multer.diskStorage({
+  destination: (_, __, cb) => {
+    cb(null, UPLOAD_DIR);
+  },
+  filename: (_, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${uuidv4()}${ext}`);
+  },
+});
+
+
 const fileFilter = (
   _req: Request,
   file: Express.Multer.File,
@@ -31,10 +42,13 @@ const fileFilter = (
   const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
   if (!allowedTypes.includes(file.mimetype)) {
-    cb(
-      new Error(
+    const error:any =  new Error(
         "Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.",
-      ),
+      );
+      error.statusCode = 400;
+
+    cb(
+     error
     );
     return;
   }
@@ -43,6 +57,15 @@ const fileFilter = (
 
 export const tempMulterUploader = multer({
   storage:tempStorage,
+  fileFilter,
+  limits: {
+    fileSize: parseInt(process.env.MAX_FILE_SIZE || "10485760"),
+  },
+});
+
+
+export const uploader = multer({
+  storage:uploadStorage,
   fileFilter,
   limits: {
     fileSize: parseInt(process.env.MAX_FILE_SIZE || "10485760"),
