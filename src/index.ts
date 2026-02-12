@@ -8,7 +8,6 @@ import couponRoutes from '@modules/coupon/coupon.routes'
 import fileUploadRoutes from '@modules/file-upload/upload.routes'
 import galleryRoutes from '@modules/gallery/gallery.route'
 import bannerRoutes from '@modules/banner/banner.route'
-import { requireAuth } from '@middlewares/requiresAuth';
 
 
 const PORT = process.env.PORT || 4000;
@@ -18,8 +17,6 @@ app.use('/api/auth',authRoutes)
 
 
 app.use('/api/users',userRoutes)
-
-// app.use(requireAuth)
 
 app.use('/api/products',productRoutes)
 app.use('/api/categories',categoryRoutes)

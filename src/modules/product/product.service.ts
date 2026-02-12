@@ -65,11 +65,16 @@ export async function searchProducts({
   nextCursor: string | null;
 }> {
   let limit = Number(rest.limit ?? "10");
-  let where: Prisma.ProductWhereInput = {};
-  let orderBy: Prisma.ProductOrderByWithRelationInput = {};
+  let where: Prisma.ProductWhereInput = {
+    
+  };
+  let orderBy: Prisma.ProductOrderByWithRelationInput = {
+      id: "asc",
+  };
 
   switch (status) {
     case "best_seller":
+      delete orderBy.id;
       orderBy.totalSold = "desc";
       break;
     case "is_featured":
@@ -104,7 +109,6 @@ export async function searchProducts({
     }),
     where,
     orderBy: {
-      id: "asc",
       ...orderBy,
     },
     include: {

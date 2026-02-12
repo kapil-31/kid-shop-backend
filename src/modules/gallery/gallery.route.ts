@@ -7,8 +7,8 @@ import { deflate } from "node:zlib";
 
 const router = Router();
 router.get('/',getGalleryHandler)
-router.use(requireAuth)
 
+router.use(requireAuth)
 
 router.post('/',uploader.single('image'),storeGalleryHanlder)
 router.put('/',uploader.single('image'),updateGalleryHandler)

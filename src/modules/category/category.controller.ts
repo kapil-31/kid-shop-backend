@@ -5,8 +5,10 @@ import {
   updateCategory,
   searchCategory,
   deleteCategory,
+  findCategoryBySlug,
 } from "./category.service";
 import { imageProcessingService } from "@modules/file-upload/upload.service";
+import { successResponse } from "@utils/helpers";
 
 export async function createCategoryHandler(req: Request, res: Response) {
   const {temLogoId,...data} = createCategorySchema.parse(req.body);
@@ -22,6 +24,19 @@ export async function createCategoryHandler(req: Request, res: Response) {
       logo: url,
     })
     .status(200);
+}
+
+export async function getCategoryBySlugHandler(req:Request,res:Response){
+  const slug = req.params.slug as string;
+  console.log({slug})
+  if(!slug) {
+    const error:any =new Error('Please provide slug');
+     error.StatusCode = 404;
+    throw error;
+  }
+
+
+  res.json(successResponse(await findCategoryBySlug(slug)))
 }
 
 export async function updateCategoryHandler(req: Request, res: Response) {
