@@ -1,5 +1,5 @@
 
-import { ProductWithRelations } from "types/product.types";
+import { ProductClientType } from "types/product.types";
 
 export type ProductImageDto = {
   id: string;
@@ -13,6 +13,7 @@ export type ProductResponseDto = {
   price: number; // NEVER expose Prisma Decimal
   stock: number;
   createdAt: Date;
+  isFeatured:boolean;
   images: ProductImageDto[];
   description: string;
   category: {
@@ -22,7 +23,7 @@ export type ProductResponseDto = {
 };
 
 export function toProductDto(
-  product: ProductWithRelations
+  product: ProductClientType
 ): ProductResponseDto {
   return {
     id: product.id,
@@ -32,6 +33,7 @@ export function toProductDto(
     createdAt: product.createdAt,
     images: product.images,
     description: product.description,
+    isFeatured:product.isFeatured,
     category: product.category,
   };
 }

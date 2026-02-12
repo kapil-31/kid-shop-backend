@@ -65,7 +65,9 @@ export const ModelName = {
   Coupon: 'Coupon',
   CouponRedemption: 'CouponRedemption',
   RefreshToken: 'RefreshToken',
-  TempUpload: 'TempUpload'
+  TempUpload: 'TempUpload',
+  Banners: 'Banners',
+  Gallery: 'Gallery'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -107,7 +109,10 @@ export const ProductScalarFieldEnum = {
   stockQty: 'stockQty',
   tags: 'tags',
   createdAt: 'createdAt',
-  updateAt: 'updateAt'
+  updateAt: 'updateAt',
+  isFeatured: 'isFeatured',
+  totalSold: 'totalSold',
+  draft: 'draft'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -310,6 +315,22 @@ export const TempUploadScalarFieldEnum = {
 } as const
 
 export type TempUploadScalarFieldEnum = (typeof TempUploadScalarFieldEnum)[keyof typeof TempUploadScalarFieldEnum]
+
+
+export const BannersScalarFieldEnum = {
+  id: 'id',
+  logo: 'logo'
+} as const
+
+export type BannersScalarFieldEnum = (typeof BannersScalarFieldEnum)[keyof typeof BannersScalarFieldEnum]
+
+
+export const GalleryScalarFieldEnum = {
+  id: 'id',
+  photo: 'photo'
+} as const
+
+export type GalleryScalarFieldEnum = (typeof GalleryScalarFieldEnum)[keyof typeof GalleryScalarFieldEnum]
 
 
 export const SortOrder = {

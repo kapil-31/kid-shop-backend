@@ -4,6 +4,7 @@ import {
   createProduct,
   getProudctById,
   ProductImage,
+  ProductSearchQuery,
   removeProduct,
   searchProducts,
   updateProduct,
@@ -30,7 +31,8 @@ export async function createProductHandler(req: Request, res: Response) {
 }
 
 export async function searchProductHandler(req: Request, res: Response) {
-  const products = await searchProducts({});
+  const query = req.query as unknown as ProductSearchQuery;
+  const products = await searchProducts(query);
   return res
     .json({
       cursor: products.nextCursor,

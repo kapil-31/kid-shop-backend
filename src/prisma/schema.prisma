@@ -44,6 +44,9 @@ model Product {
   cartItem    CartItems[]
   createdAt   DateTime       @default(now())
   updateAt    DateTime       @default(now())
+  isFeatured  Boolean @default(true)
+  totalSold  Int @default(0)
+  draft     Boolean @default(false)
 }
 
 model ProductImage {
@@ -262,3 +265,16 @@ model TempUpload {
   @@index([expiresAt])
 }
 
+
+
+model Banners{
+  id String @id @default(uuid())
+  logo String 
+}
+
+
+
+model Gallery{
+  id String @id @default(uuid())
+  photo String
+}

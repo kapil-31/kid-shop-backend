@@ -398,7 +398,9 @@ export const ModelName = {
   Coupon: 'Coupon',
   CouponRedemption: 'CouponRedemption',
   RefreshToken: 'RefreshToken',
-  TempUpload: 'TempUpload'
+  TempUpload: 'TempUpload',
+  Banners: 'Banners',
+  Gallery: 'Gallery'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "product" | "productImage" | "review" | "category" | "order" | "orderItem" | "cart" | "address" | "orderAddress" | "cartItems" | "coupon" | "couponRedemption" | "refreshToken" | "tempUpload"
+    modelProps: "user" | "product" | "productImage" | "review" | "category" | "order" | "orderItem" | "cart" | "address" | "orderAddress" | "cartItems" | "coupon" | "couponRedemption" | "refreshToken" | "tempUpload" | "banners" | "gallery"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1530,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Banners: {
+      payload: Prisma.$BannersPayload<ExtArgs>
+      fields: Prisma.BannersFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BannersFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BannersFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        findFirst: {
+          args: Prisma.BannersFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BannersFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        findMany: {
+          args: Prisma.BannersFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>[]
+        }
+        create: {
+          args: Prisma.BannersCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        createMany: {
+          args: Prisma.BannersCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BannersCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>[]
+        }
+        delete: {
+          args: Prisma.BannersDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        update: {
+          args: Prisma.BannersUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        deleteMany: {
+          args: Prisma.BannersDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BannersUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BannersUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>[]
+        }
+        upsert: {
+          args: Prisma.BannersUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BannersPayload>
+        }
+        aggregate: {
+          args: Prisma.BannersAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBanners>
+        }
+        groupBy: {
+          args: Prisma.BannersGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BannersGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BannersCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BannersCountAggregateOutputType> | number
+        }
+      }
+    }
+    Gallery: {
+      payload: Prisma.$GalleryPayload<ExtArgs>
+      fields: Prisma.GalleryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GalleryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GalleryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        findFirst: {
+          args: Prisma.GalleryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GalleryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        findMany: {
+          args: Prisma.GalleryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>[]
+        }
+        create: {
+          args: Prisma.GalleryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        createMany: {
+          args: Prisma.GalleryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GalleryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>[]
+        }
+        delete: {
+          args: Prisma.GalleryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        update: {
+          args: Prisma.GalleryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        deleteMany: {
+          args: Prisma.GalleryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GalleryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GalleryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>[]
+        }
+        upsert: {
+          args: Prisma.GalleryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GalleryPayload>
+        }
+        aggregate: {
+          args: Prisma.GalleryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGallery>
+        }
+        groupBy: {
+          args: Prisma.GalleryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GalleryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GalleryCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1590,7 +1740,10 @@ export const ProductScalarFieldEnum = {
   stockQty: 'stockQty',
   tags: 'tags',
   createdAt: 'createdAt',
-  updateAt: 'updateAt'
+  updateAt: 'updateAt',
+  isFeatured: 'isFeatured',
+  totalSold: 'totalSold',
+  draft: 'draft'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -1793,6 +1946,22 @@ export const TempUploadScalarFieldEnum = {
 } as const
 
 export type TempUploadScalarFieldEnum = (typeof TempUploadScalarFieldEnum)[keyof typeof TempUploadScalarFieldEnum]
+
+
+export const BannersScalarFieldEnum = {
+  id: 'id',
+  logo: 'logo'
+} as const
+
+export type BannersScalarFieldEnum = (typeof BannersScalarFieldEnum)[keyof typeof BannersScalarFieldEnum]
+
+
+export const GalleryScalarFieldEnum = {
+  id: 'id',
+  photo: 'photo'
+} as const
+
+export type GalleryScalarFieldEnum = (typeof GalleryScalarFieldEnum)[keyof typeof GalleryScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2112,6 +2281,8 @@ export type GlobalOmitConfig = {
   couponRedemption?: Prisma.CouponRedemptionOmit
   refreshToken?: Prisma.RefreshTokenOmit
   tempUpload?: Prisma.TempUploadOmit
+  banners?: Prisma.BannersOmit
+  gallery?: Prisma.GalleryOmit
 }
 
 /* Types for Logging */

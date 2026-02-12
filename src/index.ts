@@ -6,6 +6,8 @@ import productRoutes from '@modules/product/product.routes'
 import categoryRoutes from '@modules/category/category.routes'
 import couponRoutes from '@modules/coupon/coupon.routes'
 import fileUploadRoutes from '@modules/file-upload/upload.routes'
+import galleryRoutes from '@modules/gallery/gallery.route'
+import bannerRoutes from '@modules/banner/banner.route'
 import { requireAuth } from '@middlewares/requiresAuth';
 
 
@@ -23,6 +25,8 @@ app.use('/api/products',productRoutes)
 app.use('/api/categories',categoryRoutes)
 app.use('/api/coupons',couponRoutes)
 app.use('/api/upload',fileUploadRoutes)
+app.use('/api/gallery',galleryRoutes)
+app.use('/api/banner',bannerRoutes)
 
 
 app.use(errorHandler)

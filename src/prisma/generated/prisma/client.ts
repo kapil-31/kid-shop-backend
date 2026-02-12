@@ -112,3 +112,13 @@ export type RefreshToken = Prisma.RefreshTokenModel
  * 
  */
 export type TempUpload = Prisma.TempUploadModel
+/**
+ * Model Banners
+ * 
+ */
+export type Banners = Prisma.BannersModel
+/**
+ * Model Gallery
+ * 
+ */
+export type Gallery = Prisma.GalleryModel
