@@ -35,8 +35,10 @@ export async function searchProductHandler(req: Request, res: Response) {
   const products = await searchProducts(query);
   return res
     .json({
-      cursor: products.nextCursor,
       data: products.data?.map(toProductDto),
+       pagination: {
+       ...products.pagination,
+      },
     })
     .status(200);
 }

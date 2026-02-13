@@ -6,6 +6,7 @@ import { subDays } from "date-fns";
 
 type StoreProductInput = Omit<CreateProductInput, "images">;
 export type ProductSearchQuery = {
+  page: string;
   limit: string;
   cursor: string;
   search?: string;
@@ -62,14 +63,24 @@ export async function searchProducts({
   ...rest
 }: ProductSearchQuery): Promise<{
   data: ProductClientType[];
-  nextCursor: string | null;
-}> {
-  let limit = Number(rest.limit ?? "10");
-  let where: Prisma.ProductWhereInput = {
-    
+  pagination: {
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+    page: number;
   };
+}> {
+  let page = Number(rest.page ?? "1");
+
+  let limit = Number(rest.limit ?? "10");
+
+  const skip = (page - 1) * limit;
+
+  let where: Prisma.ProductWhereInput = {};
   let orderBy: Prisma.ProductOrderByWithRelationInput = {
-      id: "asc",
+    id: "asc",
   };
 
   switch (status) {
@@ -101,36 +112,36 @@ export async function searchProducts({
   }
 
   // build where query based on this
-  const products = await prisma.product.findMany({
-    take: Number(limit) + 1,
-    ...(cursor && {
-      skip: 1,
-      cursor: { id: cursor },
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      skip,
+      take: limit,
+      where,
+      orderBy,
+      include: {
+        images: {
+          select: { id: true, url: true, name: true },
+        },
+        category: {
+          select: { id: true, name: true },
+        },
+      },
     }),
-    where,
-    orderBy: {
-      ...orderBy,
-    },
-    include: {
-      images: {
-        select: { id: true, url: true, name: true },
-      },
-      category: {
-        select: { id: true, name: true },
-      },
-    },
-  });
+    prisma.product.count({ where }),
+  ]);
 
-  let nextCursor: string | null = null;
-
-  if (products.length > limit) {
-    const nextItem = products.pop();
-    nextCursor = nextItem!.id;
-  }
+  const totalPages = Math.ceil(total / limit);
 
   return {
     data: products,
-    nextCursor,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
   };
 }
 
