@@ -12,12 +12,12 @@ router.route('/')
 .get(searchProductHandler)
 
 
-router.use(requireAuth)
 router.route('/:id')
 .get(getOnProductHandler)
-.put(updateProductHandler)
-.delete(deleteProductHandler)
+.put(requireAuth,updateProductHandler)
+.delete(requireAuth,deleteProductHandler)
 
+router.use(requireAuth)
 router.route('/:id/images')
 .put(uploader.array('images',10),updateProductImage)
 

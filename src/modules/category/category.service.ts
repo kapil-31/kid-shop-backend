@@ -52,3 +52,4 @@ export async function deleteCategory(id: string) {
 export async function findCategoryBySlug(slug:string){
     return prisma.category.findUnique({where:{slug}})
 }
+

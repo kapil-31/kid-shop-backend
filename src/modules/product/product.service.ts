@@ -10,6 +10,7 @@ export type ProductSearchQuery = {
   limit: string;
   cursor: string;
   search?: string;
+  category?:string;
   status?: "new_arrival" | "is_featured" | "best_seller";
 };
 export type ProductImage = { name: string; url: string; size: number };
@@ -60,6 +61,7 @@ export async function searchProducts({
   cursor,
   search,
   status,
+  category,
   ...rest
 }: ProductSearchQuery): Promise<{
   data: ProductClientType[];
@@ -82,6 +84,17 @@ export async function searchProducts({
   let orderBy: Prisma.ProductOrderByWithRelationInput = {
     id: "asc",
   };
+
+  if(category){
+    where = {
+    ...where,
+    category:{
+      slug:{
+       contains:category
+      }
+    }
+    }
+  }
 
   switch (status) {
     case "best_seller":
@@ -110,6 +123,7 @@ export async function searchProducts({
       },
     };
   }
+
 
   // build where query based on this
   const [products, total] = await Promise.all([
