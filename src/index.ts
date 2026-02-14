@@ -9,6 +9,7 @@ import fileUploadRoutes from '@modules/file-upload/upload.routes'
 import galleryRoutes from '@modules/gallery/gallery.route'
 import bannerRoutes from '@modules/banner/banner.route'
 
+import addToCartRoutes from '@modules/cart/cart.routes'
 
 const PORT = process.env.PORT || 4000;
 
@@ -24,6 +25,7 @@ app.use('/api/coupons',couponRoutes)
 app.use('/api/upload',fileUploadRoutes)
 app.use('/api/gallery',galleryRoutes)
 app.use('/api/banner',bannerRoutes)
+app.use('/api/cart',addToCartRoutes)
 
 
 app.use(errorHandler)

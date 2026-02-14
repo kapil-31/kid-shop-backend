@@ -38,6 +38,9 @@ CREATE TABLE "Product" (
     "tags" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isFeatured" BOOLEAN NOT NULL DEFAULT true,
+    "totalSold" INTEGER NOT NULL DEFAULT 0,
+    "draft" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -126,7 +129,7 @@ CREATE TABLE "Cart" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAT" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Cart_pkey" PRIMARY KEY ("id")
 );
@@ -146,7 +149,7 @@ CREATE TABLE "Address" (
     "isDefaultBilling" BOOLEAN NOT NULL DEFAULT true,
     "isDefaultShipping" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
 );
@@ -178,10 +181,10 @@ CREATE TABLE "CartItems" (
     "cartId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "unitPrice" INTEGER NOT NULL,
-    "lineTotal" INTEGER NOT NULL,
+    "unitPrice" DECIMAL(65,30) NOT NULL,
+    "lineTotal" DECIMAL(65,30) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAT" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAT" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "CartItems_pkey" PRIMARY KEY ("id")
 );
@@ -242,15 +245,19 @@ CREATE TABLE "TempUpload" (
 );
 
 -- CreateTable
-CREATE TABLE "Sessions" (
+CREATE TABLE "Banners" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "expiresAt" TIMESTAMP(3) NOT NULL,
-    "revoked" BOOLEAN NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL,
-    "lastSeenAt" TIMESTAMP(3) NOT NULL,
+    "logo" TEXT NOT NULL,
 
-    CONSTRAINT "Sessions_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Banners_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Gallery" (
+    "id" TEXT NOT NULL,
+    "photo" TEXT NOT NULL,
+
+    CONSTRAINT "Gallery_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -318,6 +325,3 @@ ALTER TABLE "CouponRedemption" ADD CONSTRAINT "CouponRedemption_couponId_fkey" F
 
 -- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Sessions" ADD CONSTRAINT "Sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -14,6 +14,8 @@ import {
   storeRefreshToken,
 } from "./auth.service";
 import { hash } from "@utils/helpers";
+import { prisma } from "lib/prisma";
+import { getCartByUser, getCartItemsCount } from "@modules/cart/cart.service";
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -65,9 +67,15 @@ export async function loginHandler(req: Request, res: Response) {
     });
   }
 
+
+ 
+ 
   return res.json({
     success: true,
-    user,
+    user :  {
+      ...user,
+      password:undefined
+    },
   });
 }
 
@@ -162,7 +170,12 @@ export async function logoutHandler(req: Request, res: Response) {
 export async function getMeHandler(req: Request, res: Response) {
   const user = req?.user;
   if (user) {
-    const result = await findOneUser({ id: user.id });
-    res.json(result);
+    const result = await findOneUser({ id: user.userId });
+    const cart = await getCartByUser(user.userId);
+    const cartItemsCount = await getCartItemsCount(cart?.id!)
+    res.json({
+      ...result,
+      cartItemsCount:cartItemsCount,
+    });
   }
 }

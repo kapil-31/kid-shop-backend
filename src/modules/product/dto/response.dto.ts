@@ -12,6 +12,7 @@ export type ProductResponseDto = {
   name: string;
   price: number; // NEVER expose Prisma Decimal
   stock: number;
+  isActive:boolean;
   createdAt: Date;
   isFeatured:boolean;
   images: ProductImageDto[];
@@ -30,6 +31,7 @@ export function toProductDto(
     name: product.name,
     price: Number(product.price),
     stock: product.stockQty,
+    isActive: product.isActive,
     createdAt: product.createdAt,
     images: product.images,
     description: product.description,
