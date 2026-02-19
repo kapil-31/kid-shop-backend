@@ -19,6 +19,11 @@ export const createProductSchema = z.object({
     .optional()
     .default(true),
 
+   isFeatured: z
+    .boolean()
+    .optional()
+    .default(true),
+
   categoryId: z
     .string()
     .uuid("Invalid category ID"),

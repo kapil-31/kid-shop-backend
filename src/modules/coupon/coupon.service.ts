@@ -18,14 +18,29 @@ export async function updateCoupon(id:string,data:updateCategorySchema){
     })
 }
 
-export async function  searchCoupon(search:string){
-    return prisma.coupon.findMany({
+export async function  findCouponByCode(code:string){
+    return prisma.coupon.findUnique({
         where:{
-            code:{
-                contains:search?.trim(),
-                mode:"insensitive"
-            }
+            code:code
             
+        }
+    })
+}
+
+export async function  getCouponById(id:string){
+    return prisma.coupon.findUnique({
+        where:{
+            id:id
+            
+        }
+    })
+}
+
+
+export async function searchCoupon() {
+    return prisma.coupon.findMany({
+        orderBy:{
+            id:'asc'
         }
     })
 }
