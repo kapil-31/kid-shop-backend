@@ -46,7 +46,7 @@ export async function searchProductHandler(req: Request, res: Response) {
 export async function getOnProductHandler(req: Request, res: Response) {
   const id = req.params.id;
   const product = await getProudctById(id as string);
-  res.json(successResponse(product));
+  res.json(successResponse(toProductDto(product as any)));
 }
 
 export async function updateProductHandler(req: Request, res: Response) {

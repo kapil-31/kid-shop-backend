@@ -27,7 +27,6 @@ export type AggregateOrderAddress = {
 export type OrderAddressMinAggregateOutputType = {
   id: string | null
   orderId: string | null
-  addressId: string | null
   type: $Enums.OrderAdressType | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -45,7 +44,6 @@ export type OrderAddressMinAggregateOutputType = {
 export type OrderAddressMaxAggregateOutputType = {
   id: string | null
   orderId: string | null
-  addressId: string | null
   type: $Enums.OrderAdressType | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -63,7 +61,6 @@ export type OrderAddressMaxAggregateOutputType = {
 export type OrderAddressCountAggregateOutputType = {
   id: number
   orderId: number
-  addressId: number
   type: number
   createdAt: number
   updatedAt: number
@@ -83,7 +80,6 @@ export type OrderAddressCountAggregateOutputType = {
 export type OrderAddressMinAggregateInputType = {
   id?: true
   orderId?: true
-  addressId?: true
   type?: true
   createdAt?: true
   updatedAt?: true
@@ -101,7 +97,6 @@ export type OrderAddressMinAggregateInputType = {
 export type OrderAddressMaxAggregateInputType = {
   id?: true
   orderId?: true
-  addressId?: true
   type?: true
   createdAt?: true
   updatedAt?: true
@@ -119,7 +114,6 @@ export type OrderAddressMaxAggregateInputType = {
 export type OrderAddressCountAggregateInputType = {
   id?: true
   orderId?: true
-  addressId?: true
   type?: true
   createdAt?: true
   updatedAt?: true
@@ -210,7 +204,6 @@ export type OrderAddressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type OrderAddressGroupByOutputType = {
   id: string
   orderId: string
-  addressId: string
   type: $Enums.OrderAdressType
   createdAt: Date
   updatedAt: Date
@@ -249,7 +242,6 @@ export type OrderAddressWhereInput = {
   NOT?: Prisma.OrderAddressWhereInput | Prisma.OrderAddressWhereInput[]
   id?: Prisma.StringFilter<"OrderAddress"> | string
   orderId?: Prisma.StringFilter<"OrderAddress"> | string
-  addressId?: Prisma.StringFilter<"OrderAddress"> | string
   type?: Prisma.EnumOrderAdressTypeFilter<"OrderAddress"> | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
@@ -268,7 +260,6 @@ export type OrderAddressWhereInput = {
 export type OrderAddressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  addressId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -290,7 +281,6 @@ export type OrderAddressWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.OrderAddressWhereInput[]
   NOT?: Prisma.OrderAddressWhereInput | Prisma.OrderAddressWhereInput[]
   orderId?: Prisma.StringFilter<"OrderAddress"> | string
-  addressId?: Prisma.StringFilter<"OrderAddress"> | string
   type?: Prisma.EnumOrderAdressTypeFilter<"OrderAddress"> | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
@@ -309,7 +299,6 @@ export type OrderAddressWhereUniqueInput = Prisma.AtLeast<{
 export type OrderAddressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  addressId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -333,7 +322,6 @@ export type OrderAddressScalarWhereWithAggregatesInput = {
   NOT?: Prisma.OrderAddressScalarWhereWithAggregatesInput | Prisma.OrderAddressScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"OrderAddress"> | string
   orderId?: Prisma.StringWithAggregatesFilter<"OrderAddress"> | string
-  addressId?: Prisma.StringWithAggregatesFilter<"OrderAddress"> | string
   type?: Prisma.EnumOrderAdressTypeWithAggregatesFilter<"OrderAddress"> | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrderAddress"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrderAddress"> | Date | string
@@ -350,7 +338,6 @@ export type OrderAddressScalarWhereWithAggregatesInput = {
 
 export type OrderAddressCreateInput = {
   id?: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -361,7 +348,7 @@ export type OrderAddressCreateInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
   order: Prisma.OrderCreateNestedOneWithoutAddressInput
 }
@@ -369,7 +356,6 @@ export type OrderAddressCreateInput = {
 export type OrderAddressUncheckedCreateInput = {
   id?: string
   orderId: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -380,13 +366,12 @@ export type OrderAddressUncheckedCreateInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
 }
 
 export type OrderAddressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -405,7 +390,6 @@ export type OrderAddressUpdateInput = {
 export type OrderAddressUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -423,7 +407,6 @@ export type OrderAddressUncheckedUpdateInput = {
 export type OrderAddressCreateManyInput = {
   id?: string
   orderId: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -434,13 +417,12 @@ export type OrderAddressCreateManyInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
 }
 
 export type OrderAddressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -458,7 +440,6 @@ export type OrderAddressUpdateManyMutationInput = {
 export type OrderAddressUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -486,7 +467,6 @@ export type OrderAddressOrderByRelationAggregateInput = {
 export type OrderAddressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  addressId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -504,7 +484,6 @@ export type OrderAddressCountOrderByAggregateInput = {
 export type OrderAddressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  addressId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -522,7 +501,6 @@ export type OrderAddressMaxOrderByAggregateInput = {
 export type OrderAddressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
-  addressId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -585,7 +563,6 @@ export type EnumOrderAdressTypeFieldUpdateOperationsInput = {
 
 export type OrderAddressCreateWithoutOrderInput = {
   id?: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -596,13 +573,12 @@ export type OrderAddressCreateWithoutOrderInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
 }
 
 export type OrderAddressUncheckedCreateWithoutOrderInput = {
   id?: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -613,7 +589,7 @@ export type OrderAddressUncheckedCreateWithoutOrderInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
 }
 
@@ -649,7 +625,6 @@ export type OrderAddressScalarWhereInput = {
   NOT?: Prisma.OrderAddressScalarWhereInput | Prisma.OrderAddressScalarWhereInput[]
   id?: Prisma.StringFilter<"OrderAddress"> | string
   orderId?: Prisma.StringFilter<"OrderAddress"> | string
-  addressId?: Prisma.StringFilter<"OrderAddress"> | string
   type?: Prisma.EnumOrderAdressTypeFilter<"OrderAddress"> | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrderAddress"> | Date | string
@@ -666,7 +641,6 @@ export type OrderAddressScalarWhereInput = {
 
 export type OrderAddressCreateManyOrderInput = {
   id?: string
-  addressId: string
   type?: $Enums.OrderAdressType
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -677,13 +651,12 @@ export type OrderAddressCreateManyOrderInput = {
   state: string
   postalCode: string
   phone: string
-  country: string
+  country?: string
   snapshottedAt?: Date | string
 }
 
 export type OrderAddressUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -700,7 +673,6 @@ export type OrderAddressUpdateWithoutOrderInput = {
 
 export type OrderAddressUncheckedUpdateWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -717,7 +689,6 @@ export type OrderAddressUncheckedUpdateWithoutOrderInput = {
 
 export type OrderAddressUncheckedUpdateManyWithoutOrderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  addressId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrderAdressTypeFieldUpdateOperationsInput | $Enums.OrderAdressType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -737,7 +708,6 @@ export type OrderAddressUncheckedUpdateManyWithoutOrderInput = {
 export type OrderAddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderId?: boolean
-  addressId?: boolean
   type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -756,7 +726,6 @@ export type OrderAddressSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type OrderAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderId?: boolean
-  addressId?: boolean
   type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -775,7 +744,6 @@ export type OrderAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 export type OrderAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   orderId?: boolean
-  addressId?: boolean
   type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -794,7 +762,6 @@ export type OrderAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type OrderAddressSelectScalar = {
   id?: boolean
   orderId?: boolean
-  addressId?: boolean
   type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -809,7 +776,7 @@ export type OrderAddressSelectScalar = {
   snapshottedAt?: boolean
 }
 
-export type OrderAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "addressId" | "type" | "createdAt" | "updatedAt" | "fullName" | "line1" | "line2" | "city" | "state" | "postalCode" | "phone" | "country" | "snapshottedAt", ExtArgs["result"]["orderAddress"]>
+export type OrderAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "type" | "createdAt" | "updatedAt" | "fullName" | "line1" | "line2" | "city" | "state" | "postalCode" | "phone" | "country" | "snapshottedAt", ExtArgs["result"]["orderAddress"]>
 export type OrderAddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }
@@ -828,7 +795,6 @@ export type $OrderAddressPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     orderId: string
-    addressId: string
     type: $Enums.OrderAdressType
     createdAt: Date
     updatedAt: Date
@@ -1267,7 +1233,6 @@ export interface Prisma__OrderAddressClient<T, Null = never, ExtArgs extends run
 export interface OrderAddressFieldRefs {
   readonly id: Prisma.FieldRef<"OrderAddress", 'String'>
   readonly orderId: Prisma.FieldRef<"OrderAddress", 'String'>
-  readonly addressId: Prisma.FieldRef<"OrderAddress", 'String'>
   readonly type: Prisma.FieldRef<"OrderAddress", 'OrderAdressType'>
   readonly createdAt: Prisma.FieldRef<"OrderAddress", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OrderAddress", 'DateTime'>

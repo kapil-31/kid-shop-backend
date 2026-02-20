@@ -25,7 +25,6 @@ model User {
   orders       Order[]
   cart         Cart?
   address      Address[]
-
 }
 
 model Product {
@@ -44,9 +43,9 @@ model Product {
   cartItem    CartItems[]
   createdAt   DateTime       @default(now())
   updateAt    DateTime       @default(now())
-  isFeatured  Boolean @default(true)
-  totalSold  Int @default(0)
-  draft     Boolean @default(false)
+  isFeatured  Boolean        @default(true)
+  totalSold   Int            @default(0)
+  draft       Boolean        @default(false)
 }
 
 model ProductImage {
@@ -98,24 +97,21 @@ model Category {
 }
 
 model Order {
-  id                String         @id @default(uuid())
-  userId            String
-  status            OrderStatus    @default(PENDING)
-  note              String?
-  subTotal          Decimal
-  discountTotal     Decimal
-  taxTotal          Decimal
-  shippingTotal     Decimal
-  grandTotal        Decimal
-  currency          String
-  shippingAddressId String
-  billingAddressId  String
-  placedAt          DateTime?
-  total             Decimal
-  user              User           @relation(fields: [userId], references: [id])
-  createdAt         DateTime       @default(now())
-  orderItems        OrderItem[]
-  address           OrderAddress[]
+  id            String         @id @default(uuid())
+  userId        String
+  status        OrderStatus    @default(PENDING)
+  note          String?
+  subTotal      Decimal
+  discountTotal Decimal
+  taxTotal      Decimal
+  shippingTotal Decimal
+  grandTotal    Decimal
+  currency      String
+  placedAt      DateTime?
+  user          User           @relation(fields: [userId], references: [id])
+  createdAt     DateTime       @default(now())
+  orderItems    OrderItem[]
+  address       OrderAddress[]
 }
 
 model OrderItem {
@@ -137,6 +133,7 @@ model Cart {
   user      User        @relation(fields: [userId], references: [id])
   createdAt DateTime    @default(now())
   updatedAT DateTime    @updatedAt
+  discount  Decimal?    @default(0)
   items     CartItems[]
 }
 
@@ -161,10 +158,9 @@ model Address {
 model OrderAddress {
   id            String          @id @default(uuid())
   orderId       String
-  addressId     String
   type          OrderAdressType @default(SHIPPING)
   createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   fullName      String
   line1         String?
   line2         String?
@@ -172,7 +168,7 @@ model OrderAddress {
   state         String
   postalCode    String
   phone         String
-  country       String
+  country       String @default("nepal")
   order         Order           @relation(fields: [orderId], references: [id])
   snapshottedAt DateTime        @default(now())
 }
@@ -180,14 +176,14 @@ model OrderAddress {
 model CartItems {
   id        String   @id @default(uuid())
   cartId    String
-  cart      Cart     @relation(fields: [cartId], references: [id])
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
   productId String
   quantity  Int
   unitPrice Decimal
   lineTotal Decimal
   createdAt DateTime @default(now())
   updatedAT DateTime @updatedAt
-  product Product @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Coupon {
@@ -264,16 +260,12 @@ model TempUpload {
   @@index([expiresAt])
 }
 
-
-
-model Banners{
-  id String @id @default(uuid())
-  logo String 
+model Banners {
+  id   String @id @default(uuid())
+  logo String
 }
 
-
-
-model Gallery{
-  id String @id @default(uuid())
+model Gallery {
+  id    String @id @default(uuid())
   photo String
 }

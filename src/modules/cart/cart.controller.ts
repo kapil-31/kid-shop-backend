@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addToCart, deleteCartItem, getCartByUser, updateCartItem } from "./cart.service";
+import { addToCart, calculateCartTotal, deleteCartItem, getCartByUser, updateCartItem } from "./cart.service";
 import { successResponse } from "@utils/helpers";
 import { addToCartBody, updateCartItemBody } from "./cart.schema";
 
@@ -26,3 +26,11 @@ export const deleteCartItemHandler = async (req: Request<{id:string}>, res: Resp
   res.json(successResponse(await deleteCartItem(id)))
 
 };
+
+export const calculateCartTotalHandler = async(req:Request,res:Response) => {
+  const {couponCode,cartId} = req.body;
+  const userId = req.user?.userId;
+
+  return res.json(successResponse(await calculateCartTotal(couponCode,cartId,userId!)))
+  
+}

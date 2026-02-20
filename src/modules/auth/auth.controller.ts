@@ -86,6 +86,7 @@ export async function refreshHandler(req: Request, res: Response) {
     return res.status(401).json({ message: "Missing refresh token" });
   }
 
+
   const storedToken = await findUniqueToken(token);
 
   if (!storedToken || storedToken.revoked) {
@@ -171,8 +172,8 @@ export async function getMeHandler(req: Request, res: Response) {
   const user = req?.user;
   if (user) {
     const result = await findOneUser({ id: user.userId });
-    const cart = await getCartByUser(user.userId);
-    const cartItemsCount = await getCartItemsCount(cart?.id!)
+    const cart = await getCartByUser(result?.id!);
+    const cartItemsCount = !cart ? 0 :  await getCartItemsCount(cart?.id!)
     res.json({
       ...result,
       cartItemsCount:cartItemsCount,

@@ -1805,10 +1805,7 @@ export const OrderScalarFieldEnum = {
   shippingTotal: 'shippingTotal',
   grandTotal: 'grandTotal',
   currency: 'currency',
-  shippingAddressId: 'shippingAddressId',
-  billingAddressId: 'billingAddressId',
   placedAt: 'placedAt',
-  total: 'total',
   createdAt: 'createdAt'
 } as const
 
@@ -1832,7 +1829,8 @@ export const CartScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAT: 'updatedAT'
+  updatedAT: 'updatedAT',
+  discount: 'discount'
 } as const
 
 export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
@@ -1861,7 +1859,6 @@ export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeo
 export const OrderAddressScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
-  addressId: 'addressId',
   type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

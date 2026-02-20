@@ -6,3 +6,10 @@ export const successResponse = (data:any,message:string = 'success') => ({
     data,
     message
 })
+
+
+export const throwError  = (msg:string,status=400) => {
+    const error:any = new Error(msg)
+    error.statusCode = status
+    throw error;
+}

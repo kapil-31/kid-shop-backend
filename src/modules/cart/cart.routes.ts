@@ -9,6 +9,7 @@ import {
   updateCartItemsHandler,
   deleteCartItemHandler,
   getCartByAuthUserHandler,
+  calculateCartTotalHandler,
 } from "./cart.controller";
 import { validate, validateParams } from "@middlewares/validateRequest";
 import { requireAuth } from "@middlewares/requiresAuth";
@@ -29,5 +30,7 @@ router.patch(
   validate(updateCartItemSchema),
   updateCartItemsHandler,
 );
+
+router.post('/cart-total',calculateCartTotalHandler)
 
 export default router;

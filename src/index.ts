@@ -8,6 +8,7 @@ import couponRoutes from '@modules/coupon/coupon.routes'
 import fileUploadRoutes from '@modules/file-upload/upload.routes'
 import galleryRoutes from '@modules/gallery/gallery.route'
 import bannerRoutes from '@modules/banner/banner.route'
+import orderRoutes from '@modules/order/order.route'
 
 import addToCartRoutes from '@modules/cart/cart.routes'
 
@@ -26,6 +27,7 @@ app.use('/api/upload',fileUploadRoutes)
 app.use('/api/gallery',galleryRoutes)
 app.use('/api/banner',bannerRoutes)
 app.use('/api/cart',addToCartRoutes)
+app.use('/api/order',orderRoutes)
 
 
 app.use(errorHandler)
